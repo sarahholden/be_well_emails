@@ -1,25 +1,23 @@
 {% if fulfillment.item_count == item_count %}
-  {% capture email_title %}Your order is on the way{% endcapture %}
-  {% capture email_body %}Your order is on the way. Track your shipment to see the delivery status.{% endcapture %}
+{% capture email_title %}Your order is out for delivery{% endcapture %}
+{% capture email_body %}Your order is out for delivery. Track your shipment to see the delivery status.{% endcapture %}
 {% elsif fulfillment.item_count > 1 %}
-  {% if fulfillment_status == 'fulfilled' %}
-    {% capture email_title %}The last items in your order are on the way{% endcapture %}
-    {% capture email_body %}The last items in your order are on the way. Track your shipment to see the delivery status.{% endcapture %}
-  {% else %}
-    {% capture email_title %}Some items in your order are on the way{% endcapture %}
-    {% capture email_body %}Some items in your order are on the way. Track your shipment to see the delivery status.{% endcapture %}
-  {% endif %}
+{% if fulfillment_status == 'fulfilled' %}
+{% capture email_title %}The last items in your order are out for delivery{% endcapture %}
+{% capture email_body %}The last items in your order are out for delivery. Track your shipment to see the delivery status.{% endcapture %}
 {% else %}
-  {% if fulfillment_status == 'fulfilled' %}
-    {% capture email_title %}The last item in your order is on the way{% endcapture %}
-    {% capture email_body %}The last item in your order is on the way. Track your shipment to see the delivery status.{% endcapture %}
-  {% else %}
-    {% capture email_title %}One item in your order is on the way{% endcapture %}
-    {% capture email_body %}One item in your order is on the way. Track your shipment to see the delivery status.{% endcapture %}
-  {% endif %}
+{% capture email_title %}Some items in your order are out for delivery{% endcapture %}
+{% capture email_body %}Some items in your order are out for delivery. Track your shipment to see the delivery status.{% endcapture %}
 {% endif %}
-
-{% capture email_emphasis %}Estimated delivery date: <strong>{{fulfillment.estimated_delivery_at | date: format: 'date'}}</strong>{% endcapture %}
+{% else %}
+{% if fulfillment_status == 'fulfilled' %}
+{% capture email_title %}The last item in your order is out for delivery{% endcapture %}
+{% capture email_body %}The last item in your order is out for delivery. Track your shipment to see the delivery status.{% endcapture %}
+{% else %}
+{% capture email_title %}One item in your order is out for delivery{% endcapture %}
+{% capture email_body %}One item in your order is out for delivery. Track your shipment to see the delivery status.{% endcapture %}
+{% endif %}
+{% endif %}
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1241,7 +1239,6 @@
       border: none;
     }
 
-
     table.button table td a {
       font-family: Arial, Helvetica, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -1485,6 +1482,7 @@
     table.menu th.menu-item {
       width: 220px;
     }
+
     table.menu td.menu-item.logo-item,
     table.menu th.menu-item.logo-item {
       width: 320px;
@@ -1768,7 +1766,6 @@
         min-width: 0;
       }
 
-
       .footer .logo-item {
         width: 60%;
         margin-left: auto;
@@ -1780,7 +1777,6 @@
       border-bottom: 1px solid white;
       padding-bottom: 0;
     }
-
 
     .footer {
       border-top: 1px solid white;
@@ -1797,63 +1793,70 @@
       max-width: 400px;
     }
 
-      body,
-      html,
-      .body {
-        background: #FAF9F4 !important;
-      }
+    body,
+    html,
+    .body {
+      background: #FAF9F4 !important;
+    }
 
-      .order-list__item {
-        border-bottom: 1px solid white;
-      }
-      .order-list__item td {
-        padding-top: 10px;
-        padding-bottom: 10px;
-      }
+    .order-list__item {
+      border-bottom: 1px solid white;
+    }
 
-      .subtotal-table tr:first-of-type td {
-        padding-top: 16px;
-      }
+    .order-list__item td {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
 
-      .subtotal-table--total {
-        border-top: 1px solid white;
+    .subtotal-table tr:first-of-type td {
+      padding-top: 16px;
+    }
 
-      }
-      .subtotal-table--total td {
-        padding-top: 16px;
-      }
+    .subtotal-table--total {
+      border-top: 1px solid white;
+    }
 
-      .total-discount {
-        border-bottom: 1px solid white;
-        padding-bottom: 16px;
-        text-align: right;
-      }
+    .subtotal-table--total td {
+      padding-top: 16px;
+    }
 
-      .subtotal-line__value,
-      .order-list__item-price,
-      .order-list__item-original-price,
-      .order-list__price-cell {
-        text-align: right;
-      }
+    .total-discount {
+      border-bottom: 1px solid white;
+      padding-bottom: 16px;
+      text-align: right;
+    }
 
-      .subtotal-table--total .subtotal-line__value strong {
-        font-size: 18px;
-      }
+    .subtotal-line__value,
+    .order-list__item-price,
+    .order-list__item-original-price,
+    .order-list__price-cell {
+      text-align: right;
+    }
 
-      .order-list__item-title {
-        font-weight: 700;
-      }
+    .subtotal-table--total .subtotal-line__value strong {
+      font-size: 18px;
+    }
 
-      .order-list__product-image-cell {
-        width: 80px;
-      }
+    .order-list__item-title {
+      font-weight: 700;
+    }
 
-      .customer-info__item-credit {
-        margin-right: .6rem;
-      }
-      .customer-info__payment-heading {
-        margin-bottom: .5rem;
-      }
+    .order-list__product-image-cell {
+      width: 80px;
+      padding-right: 20px;
+    }
+
+    .customer-info__item-credit {
+      margin-right: .6rem;
+    }
+
+    .customer-info__payment-heading {
+      margin-bottom: .5rem;
+    }
+
+    .discount-tag-icon {
+      display: none !important;
+    }
     </style>
   </head>
 
@@ -1923,7 +1926,7 @@
                                   </table>
                                   <center data-parsed="" class="email-heading">
                                     <h1>
-                                      <img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/heading_order_shipped.png?v=1651882083" alt="{{ email_title }}" align="center" class="float-center">
+                                      <img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/heading_out_for_delivery_2.png?v=1651884248" alt="{{ email_title }}" align="center" class="float-center">
                                     </h1>
                                    </center>
                                   <table class="spacer">
@@ -1934,6 +1937,9 @@
                                     </tbody>
                                   </table>
                                   <p>{{ email_body }}</p>
+                                  {% if fulfillment.estimated_delivery_at %}
+                                  <p>{{ email_emphasis }}</p>
+                                  {% endif %}
                                   <table class="spacer float-center">
                                     <tbody>
                                       <tr>
@@ -1976,6 +1982,21 @@
                                           </td>
                                         </tr>
                                       </table>
+                                      {% if fulfillment.tracking_numbers.size > 0 %}
+                                        <p class="disclaimer__subtext">
+                                          <br/>
+                                          {% if fulfillment.tracking_numbers.size == 1 and fulfillment.tracking_company and fulfillment.tracking_url %}
+                                          {{ fulfillment.tracking_company }} tracking number: <a href="{{ fulfillment.tracking_url }}">{{ fulfillment.tracking_numbers.first }}</a>
+                                          {% elsif fulfillment.tracking_numbers.size == 1 %}
+                                          Tracking number: {{ fulfillment.tracking_numbers.first }}
+                                          {% else %}
+                                          Tracking numbers:<br />
+                                          {% for tracking_number in fulfillment.tracking_numbers %}
+                                          {{ tracking_number }}<br />
+                                          {% endfor %}
+                                          {% endif %}
+                                        </p>
+                                      {% endif %}
                                     </center>
                                   {% endif %}
 
@@ -1998,31 +2019,6 @@
                 </tr>
               </tbody>
             </table>
-            {% assign gift_card_line_item = line_items | where: "gift_card" %}
-            {% if gift_card_line_item.first %}
-              <table align="center" class="container body-border float-center">
-                <tr>
-                  <td>
-                    <center>
-                      <table class="container">
-                        <tr>
-                          <td>
-                            <h3>Gift card</h3>
-                          </td>
-                        </tr>
-                      </table>
-                      <table class="container">
-                        <tr>
-                          <td>
-                            <p> You’ll receive separate emails for any gift cards.</p>
-                          </td>
-                        </tr>
-                      </table>
-                    </center>
-                  </td>
-                </tr>
-              </table>
-            {% endif %}
             <table align="center" class="container body-border float-center">
               <tr>
                 <td>
@@ -2033,7 +2029,80 @@
                           <table>
                             <tr>
                               <th>
+                                <center>
+                                  <table class="container">
+                                    <tr>
+                                      <td>
+                                        <h3 class="tiny-caps">Items in this shipment</h3>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                  <table class="container">
+                                    <tr>
+                                      <td>
 
+
+                                        <table class="row">
+                                          {% for line in fulfillment.fulfillment_line_items %}
+                                          <tr class="order-list__item">
+                                            <td class="order-list__item__cell">
+                                              <table>
+                                                <td class="order-list__product-image-cell">
+                                                  {% if line.line_item.image %}
+                                                  <img src="{{ line.line_item | img_url: 'compact_cropped' }}" align="left" width="60" height="60" class="order-list__product-image"/>
+                                                  {% endif %}
+                                                </td>
+                                                <td class="order-list__product-description-cell">
+                                                  {% if line.line_item.product.title %}
+                                                  {% assign line_title = line.line_item.product.title %}
+                                                  {% else %}
+                                                  {% assign line_title = line.line_item.title %}
+                                                  {% endif %}
+
+                                                  {% if line.quantity < line.line_item.quantity %}
+                                                  {% capture line_display %} {{ line.quantity }} of {{ line.line_item.quantity }} {% endcapture %}
+                                                  {% else %}
+                                                  {% assign line_display = line.line_item.quantity  %}
+                                                  {% endif %}
+
+                                                  <span class="order-list__item-title">{{ line_title }}&nbsp;&times;&nbsp;{{ line_display }}</span><br/>
+
+                                                  {% if line.line_item.variant.title != 'Default Title' %}
+                                                  <span class="order-list__item-variant">{{ line.line_item.variant.title }}</span><br/>
+                                                  {% endif %}
+
+                                                  {% if line.line_item.selling_plan_allocation %}
+                                                  <span class="order-list__item-variant">{{ line.line_item.selling_plan_allocation.selling_plan.name }}</span><br/>
+                                                  {% endif %}
+
+                                                  {% if line.line_item.refunded_quantity > 0 %}
+                                                  <span class="order-list__item-refunded">Refunded</span>
+                                                  {% endif %}
+
+                                                  {% if line.line_item.discount_allocations %}
+                                                  {% for discount_allocation in line.line_item.discount_allocations %}
+                                                  {% if discount_allocation.discount_application.target_selection != 'all' %}
+                                                  <span class="order-list__item-discount-allocation">
+                                                    <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+                                                    <span>
+                                                      {{ discount_allocation.discount_application.title | upcase }}
+                                                      (-{{ discount_allocation.amount | money }})
+                                                    </span>
+                                                  </span>
+                                                  {% endif %}
+                                                  {% endfor %}
+                                                  {% endif %}
+                                                </td>
+                                              </table>
+                                            </td>
+                                          </tr>{% endfor %}
+                                        </table>
+
+
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </center>
                               </th>
                               <th class="expander"></th>
                             </tr>
@@ -2046,7 +2115,43 @@
                 </td>
               </tr>
             </table>
+            <table align="center" class="container body-border float-center">
+              <tr>
+                <td>
+                  <table class="row">
+                    <tbody>
+                      <tr>
+                        <th class="small-12 large-12 columns first last">
+                          <table class="spacer">
+                            <tbody>
+                              <tr>
+                                <td height="26px" style="font-size:26px;line-height:26px;">&#xA0;</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table>
+                            <tr>
+                              <th>
+                                <p class="disclaimer__subtext">If you have any questions, reply to this email or contact us at <a href="mailto:{{ shop.email }}">{{ shop.email }}</a></p>
+                              </th>
+                              <th class="expander"></th>
+                            </tr>
+                          </table>
+                          <table class="spacer">
+                            <tbody>
+                              <tr>
+                                <td height="18px" style="font-size:18px;line-height:18px;">&#xA0;</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
 
+                </td>
+              </tr>
+            </table>
             <table align="center" class="container header footer float-center">
               <tbody>
                 <tr>

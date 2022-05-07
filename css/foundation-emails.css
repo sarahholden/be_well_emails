@@ -1812,6 +1812,7 @@ html,
 
 .order-list__product-image-cell {
   width: 80px;
+  padding-right: 20px;
 }
 
 .customer-info__item-credit {
