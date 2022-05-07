@@ -1846,6 +1846,7 @@
 
       .order-list__product-image-cell {
         width: 80px;
+        padding-right: 20px;
       }
 
       .customer-info__item-credit {
@@ -1882,7 +1883,7 @@
                                             <tr>
                                               <th class="menu-item hide-for-small float-center"><a href="https://bewellbykellyshop.com/pages/about"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/learn.jpg?v=1651876181" alt="Learn"></a></th>
                                               <th class="menu-item hide-for-small float-center"><a href="https://bewellbykellyshop.com/collections/all"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/shop.jpg?v=1651876182" alt="Shop"></a></th>
-                                              <th class="menu-item logo-item float-center"><a href="https://bewellbykellyshop.com/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/logo.jpg?v=1651876181" alt="{{ shop.name }}"></a></a></th>
+                                              <th class="menu-item logo-item float-center"><a href="https://bewellbykellyshop.com/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/logo.jpg?v=1651876181" alt="{{ shop.name }}"></a></th>
                                               <th class="menu-item hide-for-small float-center"><a href="https://bewellbykellyshop.com/pages/smoothies"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/make.jpg?v=1651876181" alt="Make"></a></th>
                                               <th class="menu-item hide-for-small float-center"><a href="https://bewellbykellyshop.com/pages/be-well-by-kelly-podcast"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/listen.jpg?v=1651876181" alt="Listen"></a></th>
                                             </tr>
@@ -1978,6 +1979,28 @@
                                       </table>
                                     </center>
                                   {% endif %}
+                                  <table class="spacer">
+                                    <tbody>
+                                      <tr>
+                                        <td height="8px" style="font-size:8px;line-height:8px;">&#xA0;</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  {% if fulfillment.tracking_numbers.size > 0 %}
+                                  <p class="disclaimer__subtext">
+                                    <br/>
+                                    {% if fulfillment.tracking_numbers.size == 1 and fulfillment.tracking_company and fulfillment.tracking_url %}
+                                    {{ fulfillment.tracking_company }} tracking number: <a href="{{ fulfillment.tracking_url }}">{{ fulfillment.tracking_numbers.first }}</a>
+                                    {% elsif fulfillment.tracking_numbers.size == 1 %}
+                                    Tracking number: {{ fulfillment.tracking_numbers.first }}
+                                    {% else %}
+                                    Tracking numbers:<br />
+                                    {% for tracking_number in fulfillment.tracking_numbers %}
+                                    {{ tracking_number }}<br />
+                                    {% endfor %}
+                                    {% endif %}
+                                  </p>
+                                  {% endif %}
 
                                 </th>
                                 <th class="expander"></th>
@@ -1987,10 +2010,11 @@
                         </tr>
                       </tbody>
                     </table>
+
                     <table class="spacer">
                       <tbody>
                         <tr>
-                          <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                          <td height="2px" style="font-size:2px;line-height:2px;">&#xA0;</td>
                         </tr>
                       </tbody>
                     </table>
@@ -1998,31 +2022,6 @@
                 </tr>
               </tbody>
             </table>
-            {% assign gift_card_line_item = line_items | where: "gift_card" %}
-            {% if gift_card_line_item.first %}
-              <table align="center" class="container body-border float-center">
-                <tr>
-                  <td>
-                    <center>
-                      <table class="container">
-                        <tr>
-                          <td>
-                            <h3>Gift card</h3>
-                          </td>
-                        </tr>
-                      </table>
-                      <table class="container">
-                        <tr>
-                          <td>
-                            <p> You’ll receive separate emails for any gift cards.</p>
-                          </td>
-                        </tr>
-                      </table>
-                    </center>
-                  </td>
-                </tr>
-              </table>
-            {% endif %}
             <table align="center" class="container body-border float-center">
               <tr>
                 <td>
@@ -2033,7 +2032,79 @@
                           <table>
                             <tr>
                               <th>
+                                <center>
+                                  <table class="container">
+                                    <tr>
+                                      <td>
+                                        <h3 class="tiny-caps">Items in this shipment</h3>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                  <table class="container">
+                                    <tr>
+                                      <td>
 
+
+                                        <table class="row">
+                                          {% for line in fulfillment.fulfillment_line_items %}
+                                          <tr class="order-list__item">
+                                            <td class="order-list__item__cell">
+                                              <table>
+                                                <td class="order-list__product-image-cell">
+                                                  {% if line.line_item.image %}
+                                                  <img src="{{ line.line_item | img_url: 'compact_cropped' }}" align="left" width="60" height="60" class="order-list__product-image"/>
+                                                  {% endif %}
+                                                </td>
+                                                <td class="order-list__product-description-cell">
+                                                  {% if line.line_item.product.title %}
+                                                  {% assign line_title = line.line_item.product.title %}
+                                                  {% else %}
+                                                  {% assign line_title = line.line_item.title %}
+                                                  {% endif %}
+
+                                                  {% if line.quantity < line.line_item.quantity %}
+                                                  {% capture line_display %} {{ line.quantity }} of {{ line.line_item.quantity }} {% endcapture %}
+                                                  {% else %}
+                                                  {% assign line_display = line.line_item.quantity  %}
+                                                  {% endif %}
+
+                                                  <span class="order-list__item-title">{{ line_title }}&nbsp;&times;&nbsp;{{ line_display }}</span><br/>
+
+                                                  {% if line.line_item.variant.title != 'Default Title' %}
+                                                  <span class="order-list__item-variant">{{ line.line_item.variant.title }}</span><br/>
+                                                  {% endif %}
+
+                                                  {% if line.line_item.selling_plan_allocation %}
+                                                  <span class="order-list__item-variant">{{ line.line_item.selling_plan_allocation.selling_plan.name }}</span><br/>
+                                                  {% endif %}
+
+                                                  {% if line.line_item.refunded_quantity > 0 %}
+                                                  <span class="order-list__item-refunded">Refunded</span>
+                                                  {% endif %}
+
+                                                  {% if line.line_item.discount_allocations %}
+                                                  {% for discount_allocation in line.line_item.discount_allocations %}
+                                                  {% if discount_allocation.discount_application.target_selection != 'all' %}
+                                                  <span class="order-list__item-discount-allocation">
+                                                    <span>
+                                                      {{ discount_allocation.discount_application.title | upcase }}
+                                                      (-{{ discount_allocation.amount | money }})
+                                                    </span>
+                                                  </span>
+                                                  {% endif %}
+                                                  {% endfor %}
+                                                  {% endif %}
+                                                </td>
+                                              </table>
+                                            </td>
+                                          </tr>{% endfor %}
+                                        </table>
+
+
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </center>
                               </th>
                               <th class="expander"></th>
                             </tr>
@@ -2046,7 +2117,43 @@
                 </td>
               </tr>
             </table>
+            <table align="center" class="container body-border float-center">
+              <tr>
+                <td>
+                  <table class="row">
+                    <tbody>
+                      <tr>
+                        <th class="small-12 large-12 columns first last">
+                          <table class="spacer">
+                            <tbody>
+                              <tr>
+                                <td height="26px" style="font-size:26px;line-height:26px;">&#xA0;</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table>
+                            <tr>
+                              <th>
+                                <p class="disclaimer__subtext">If you have any questions, reply to this email or contact us at <a href="mailto:{{ shop.email }}">{{ shop.email }}</a></p>
+                              </th>
+                              <th class="expander"></th>
+                            </tr>
+                          </table>
+                          <table class="spacer">
+                            <tbody>
+                              <tr>
+                                <td height="18px" style="font-size:18px;line-height:18px;">&#xA0;</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
 
+                </td>
+              </tr>
+            </table>
             <table align="center" class="container header footer float-center">
               <tbody>
                 <tr>
@@ -2066,7 +2173,7 @@
                                             <tr>
                                               <th class="menu-item hide-for-small float-center"><a href="https://www.pinterest.com/BeWellbyKelly/_created/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/pinterest.png?v=1651882083" alt="Pinterest"></a></th>
                                               <th class="menu-item hide-for-small float-center"><a href="https://www.facebook.com/bewellbykelly/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/facebook.png?v=1651882083" alt="facebook"></a></th>
-                                              <th class="menu-item logo-item float-center"><a href="https://bewellbykellyshop.com/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/footer-logo.png?v=1651882083" alt="Be Well By Kelly Site"></a></a></th>
+                                              <th class="menu-item logo-item float-center"><a href="https://bewellbykellyshop.com/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/footer-logo.png?v=1651882083" alt="Be Well By Kelly Site"></a></th>
                                               <th class="menu-item hide-for-small float-center"><a href="https://www.youtube.com/channel/UCPjFtjo841kVXoG9m-ONMxw"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/youtube.png?v=1651882083" alt="Youtube"></a></th>
                                               <th class="menu-item hide-for-small float-center"><a href="https://www.instagram.com/bewellbykelly/"><img src="https://cdn.shopify.com/s/files/1/0610/1640/8305/files/instagram.png?v=1651882083" alt="Instagram"></a></th>
                                             </tr>
@@ -2098,7 +2205,7 @@
                               <tr>
                                 <th>
                                   <center data-parsed="">
-                                    <p class="text-center text-tiny">Our mailing address is:<br>Be Well by Kelly<br>11740 San Vicente Blvd. Ste. #109-410<br>Los Angeles, CA 90049<p>
+                                    <p class="text-center text-tiny">Our mailing address is:<br>Be Well by Kelly<br>11740 San Vicente Blvd. Ste. #109-410<br>Los Angeles, CA 90049</p>
                                   </center>
                                 </th>
                                 <th class="expander"></th>
